@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.company.enroller.model.Participant;
 import com.company.enroller.persistence.ParticipantService;
@@ -37,18 +36,18 @@ public class ParticipantRestController {
 		return new ResponseEntity<Participant>(participant, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.POST)
+	@RequestMapping(value = "", method = RequestMethod.POST) // dodawanie użytkownika
 	public ResponseEntity<?> addParticipant(@RequestBody Participant participant) {
 		if (participantService.findByLogin(participant.getLogin()) != null) {
 			return new ResponseEntity(
-					"Unable to create. A participant with login " + participant.getLogin() + " already exist.",
+					"Unable to create. A participant with login " + participant.getLogin() + " already exists.",
 					HttpStatus.CONFLICT);
 		}
 		participantService.add(participant);
 		return new ResponseEntity<Participant>(participant, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE) // usuwanie użytkownika
 	public ResponseEntity<?> delete(@PathVariable("id") String login) {
 		Participant participant = participantService.findByLogin(login);
 		if (participant == null) {
@@ -58,7 +57,7 @@ public class ParticipantRestController {
 		return new ResponseEntity<Participant>(HttpStatus.NO_CONTENT);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT) // aktualizacja użytkownika
 	public ResponseEntity<?> update(@PathVariable("id") String login,
 			@RequestBody Participant updatedParticipant) {
 		if (participantService.findByLogin(login)!=null) {
